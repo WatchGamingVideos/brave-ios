@@ -70,11 +70,7 @@ struct CryptoPagesView: View {
         }
       }
       .sheet(isPresented: $isShowingSearch) {
-        AssetSearchView(
-          tokenRegistry: walletStore.tokenRegistry,
-          keyringStore: walletStore.keyringStore,
-          networkStore: walletStore.networkStore
-        )
+        AssetSearchView(walletStore: walletStore)
       }
       .toolbar {
         ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -140,7 +136,12 @@ private class CryptoPagesViewController: TabbedPageViewController {
     view.backgroundColor = .braveGroupedBackground
     
     pages = [
-      UIHostingController(rootView: PortfolioView(keyringStore: walletStore.keyringStore, networkStore: walletStore.networkStore, portfolioStore: walletStore.portfolioStore)).then {
+      UIHostingController(rootView: PortfolioView(
+        walletStore: walletStore,
+        keyringStore: walletStore.keyringStore,
+        networkStore: walletStore.networkStore,
+        portfolioStore: walletStore.portfolioStore
+      )).then {
         $0.title = Strings.Wallet.portfolioPageTitle
       },
       UIHostingController(rootView: AccountsView(keyringStore: walletStore.keyringStore)).then {

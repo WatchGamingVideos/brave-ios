@@ -92,5 +92,6 @@ public struct CryptoView: View {
     .environment(\.openWalletURLAction, .init(action: { url in
       openWalletURLAction?(url)
     }))
+    .environmentObject(walletStore)
   }
 }

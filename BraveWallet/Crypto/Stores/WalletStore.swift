@@ -7,7 +7,7 @@ import Foundation
 import BraveCore
 
 /// The main wallet store
-public class WalletStore {
+public class WalletStore: ObservableObject {
   
   public let keyringStore: KeyringStore
   public let networkStore: NetworkStore
@@ -60,5 +60,20 @@ public class WalletStore {
       rpcController: rpcController,
       walletService: walletService
     )
+  }
+  
+  private var assetDetailStore: AssetDetailStore?
+  func assetDetailStore(for token: BraveWallet.ERCToken) -> AssetDetailStore {
+    if let store = assetDetailStore, store.token.id == token.id {
+      return store
+    }
+    let store = AssetDetailStore(
+      assetRatioController: assetRatioController,
+      keyringController: keyringController,
+      rpcController: rpcController,
+      token: token
+    )
+    assetDetailStore = store
+    return store
   }
 }
